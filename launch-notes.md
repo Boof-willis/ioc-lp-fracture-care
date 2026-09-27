@@ -48,14 +48,13 @@ Preserved the approved design, 4:5 provider frames, review excerpts, and compres
 ## Review data
 The HTML ships a static snapshot (4.9 / 102, September 26, 2026, supplied by the client) so the page is complete without JavaScript or the API. On load, `assets/live-rating.js` requests `/api/reviews` and, on success, rewrites the three rating blocks (value, count, stars, aria-label) and the footnote to say the figures update automatically. On any failure it leaves the snapshot untouched.
 
-`/api/reviews` is a Cloudflare Pages Function (`functions/api/reviews.js`). It reads the public HighLevel Reputation review-widget page for IOC's sub-account (`reputationhub.site/reputation/widgets/review_widget/P2u1fEJ2FLpliycVsCGX`), which server-renders an aggregate (`totalReviews`, `totalRating`) that HighLevel computes from the reviews it syncs from Google Business Profile. No API key, no Google Cloud project, no billing. Results are cached at the edge for one hour.
+`/api/reviews` is a Cloudflare Pages Function (`functions/api/reviews.js`). It pages through the public data API behind HighLevel's Reputation review widget for IOC's sub-account (`services.leadconnectorhq.com/reputation/widgets/data?locationId=P2u1fEJ2FLpliycVsCGX`), which lists the reviews HighLevel syncs from Google Business Profile. The function counts Google-sourced reviews itself and averages their star ratings. It deliberately ignores the widget's own `aggregateData.totalReviews`: on September 27, 2026 that figure said 149 while the review list, and Google's public panel, both said 110. No API key, no Google Cloud project, no billing. Results are cached at the edge for one hour, so a new review appears on the page within about an hour.
 
-Dependency on Warp Drive: as of September 26, 2026 the widget reports zero reviews because Google has not been connected in IOC's HighLevel Reputation settings. Until it is, the function returns 503 `no_reviews_synced` and the page keeps its static snapshot. Ask Matt to:
+Google Business Profile was connected in HighLevel Reputation on September 27, 2026 and the endpoint returned `{"rating":4.9,"count":110}`, matching Google. If reviews ever stop syncing, the function returns 503 `no_reviews_synced` and the page keeps its static snapshot.
 
-1. Connect the Google Business Profile under Reputation → Settings so reviews sync.
-2. Confirm the default review widget (or a dedicated one) is set to Google reviews only, with no minimum-rating filter, so the aggregate matches Google's public count. If a dedicated widget is used, set its ID as `GHL_WIDGET_ID` in Pages → Settings → Variables and Secrets.
+Keep the sub-account's default review widget unfiltered (no minimum-star filter, no review cap); the data API applies the widget's filters, so a filtered widget would under-count. If a dedicated widget is preferred, set its ID as `GHL_WIDGET_ID` in Pages → Settings → Variables and Secrets.
 
-Then open `https://go.instantorthocare.com/api/reviews` and confirm `rating` and `count`. Because the source is an unofficial page format, a future HighLevel change could break parsing; the failure mode is the static snapshot, never a blank or wrong number. The endpoint allows cross-origin GET, so the main website can read it later. Review excerpts remain hand-curated.
+Because the source is an unofficial HighLevel API, a future change could break it; the failure mode is the static snapshot, never a blank or wrong number. The endpoint allows cross-origin GET, so the main website can read it later. Review excerpts remain hand-curated.
 
 ## Supporting images
 
