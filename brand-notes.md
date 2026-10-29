@@ -6,9 +6,9 @@ Sources reviewed September 13, 2026:
 
 The HTML references the adjacent assets folder; keep both together when moving or deploying the page. No image data is embedded in the HTML. Responsive hero WebP images, a compressed logo, and lazy-loaded provider images reduce the initial document and image payload. Google Fonts supplies Manrope, with a system fallback.
 
-Calls are the prominent action throughout. The sticky navbar keeps the clinic number visible on mobile; there is no duplicate sticky call bar at the bottom. Directions remain a small utility link beneath the clinic address. The hero keeps the walk-in offer and has no intake link. Logo links stay on this page. Named providers replace the generic portrait and off-page team link.
+Calls are the prominent action throughout. The sticky navbar keeps the clinic number visible on mobile; there is no duplicate sticky call bar at the bottom. Directions are a secondary pill on the hero photo card, next to the clinic address, and a link in the closing location card. The hero keeps the walk-in offer and has no intake link. Logo links stay on this page. Named providers replace the generic portrait and off-page team link.
 
-Today’s regular hours are calculated in America/Denver and refreshed every minute. These are not holiday overrides or live clinic-status data. The full weekly schedule remains available without JavaScript.
+Open status (open now, closing soon, opens today at, closed for today) is calculated from the regular schedule in America/Denver and refreshed every minute, and today’s row is highlighted in the weekly table. It is not holiday-aware; each status carries a “call to confirm holiday hours” tooltip, and the location card says the same. The full weekly schedule remains available without JavaScript.
 
 Google rating, count, and review excerpts are sourced from the Google Business Profile text supplied by the user: 4.9/5 from 97 reviews. No actual field load-time or conversion-rate claim is made.
 

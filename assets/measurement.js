@@ -69,6 +69,21 @@
     });
   }, {threshold:0.5});
   document.querySelectorAll('[data-review-id]').forEach(function (el) { observer.observe(el); });
+  // Section reach: one ioc_section_view per section per page load, once it is half visible or fills half the screen.
+  var reached = new Set();
+  var sectionObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      var el = entry.target;
+      if (reached.has(el) || !entry.isIntersecting || document.visibilityState !== 'visible') return;
+      var screen = entry.rootBounds ? entry.rootBounds.height : window.innerHeight;
+      if (entry.intersectionRatio >= 0.5 || entry.intersectionRect.height >= screen * 0.5) {
+        reached.add(el);
+        sectionObserver.unobserve(el);
+        push('ioc_section_view', el, false);
+      }
+    });
+  }, {threshold:[0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1]});
+  document.querySelectorAll('section[data-measure-region]').forEach(function (el) { sectionObserver.observe(el); });
   document.addEventListener('visibilitychange', function () {
     active.forEach(function (el) { cancel(el); if (document.visibilityState === 'visible') start(el); });
   });
