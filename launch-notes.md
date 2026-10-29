@@ -15,7 +15,10 @@ All ten clinic phone links use `tel:+13853867026`, with readable `(385) 386-7026
 The main website runs the same gating snippet in its shared footer, so attribution behaves identically on both properties. The existing GTM loader remains disabled in local previews.
 
 ## Chat and SMS compliance
-The Kira Live Chat Widget and the A2P SMS Compliance tag from the Warp Drive handoff are installed, unmodified, immediately before the closing body tag, matching the main website. The chat bubble renders bottom-right; on phones its greeting prompt overlaps page content until dismissed, which is controlled in the HighLevel widget settings, not here. Both tags call widgets.leadconnectorhq.com and beta.leadconnectorhq.com.
+On October 28, 2026 the Kira Live Chat Widget (HighLevel, beta.leadconnectorhq.com) was removed at the clinic's request and replaced with the IOC AI chatbot that accompanies the move to the Athelas/Commure EMR. The new widget is the script supplied by Deven, installed unmodified as the last element before the closing body tag:
+`https://ehr-ai-agents-production-frontend.onrender.com/chat-widget.js` with `data-widget-id="1c00fcec-5c15-466c-8e0a-26200a78bd03"`. Its appearance and greeting behavior are controlled in the Athelas chatbot admin, not here.
+
+The A2P SMS Compliance tag from the Warp Drive handoff remains installed, unmodified, matching the main website. It calls widgets.leadconnectorhq.com. The main website should receive the same chatbot swap so both properties match.
 
 ## Insurance
 An insurance section sits directly beneath the hero and trust strip, mirroring the main website: heading, a continuous carousel of accepted plans (paused on hover, static and scrollable under prefers-reduced-motion), HSA/FSA and workers' compensation notes, and a call CTA. The plan list is the main website's list plus Federal Workers' Compensation (OWCP); keep both lists in sync when plans change. The hero proof row, trust strip, cost section, and FAQ also reference insurance.
